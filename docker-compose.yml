@@ -1,0 +1,138 @@
+services:
+
+  # ═══════════════════════════════════════════════════════════════════
+  # 🔌 API Server — مدیریت داده‌ها و احراز هویت
+  # ═══════════════════════════════════════════════════════════════════
+  api:
+    build:
+      context: ./backend/api
+      dockerfile: Dockerfile
+    image: online-education-api:latest
+    container_name: Online-education-api-1
+    ports:
+      - "3002:3002"
+    environment:
+      - NODE_ENV=production
+      - PORT=3002
+      - DATABASE_URL=postgresql://glassclass:glassclass123@Online-education-api-db-1:5432/glassclass
+      - REDIS_URL=redis://Online-education-redis-1:6379
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - api_data:/app/data
+      - uploads:/app/uploads
+    networks:
+      - online-education-net
+    restart: unless-stopped
+
+  # ═══════════════════════════════════════════════════════════════════
+  # 📹 Streaming Server 1 — WebRTC پورت ۳۰۰۱
+  # ═══════════════════════════════════════════════════════════════════
+  streaming1:
+    build:
+      context: ./backend/streaming
+      dockerfile: Dockerfile
+    image: online-education-streaming:latest
+    container_name: Online-education-streaming-1
+    ports:
+      - "3001:3001"
+      - "40000-40099:40000-40099/udp"
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+      - API_URL=http://Online-education-api-1:3002
+      - REDIS_URL=redis://Online-education-redis-1:6379
+      - MEDIASOUP_LISTEN_IP=0.0.0.0
+      - MEDIASOUP_ANNOUNCED_IP=127.0.0.1
+      - RTC_MIN_PORT=40000
+      - RTC_MAX_PORT=40099
+    depends_on:
+      - api
+      - redis
+    networks:
+      - online-education-net
+    restart: unless-stopped
+
+  # ═══════════════════════════════════════════════════════════════════
+  # 📹 Streaming Server 2 — WebRTC پورت ۴۰۰۱
+  # ═══════════════════════════════════════════════════════════════════
+  streaming2:
+    build:
+      context: ./backend/streaming
+      dockerfile: Dockerfile
+    image: online-education-streaming:latest
+    container_name: Online-education-streaming-2
+    ports:
+      - "4001:4001"
+      - "40100-40199:40100-40199/udp"
+    environment:
+      - NODE_ENV=production
+      - PORT=4001
+      - API_URL=http://Online-education-api-1:3002
+      - REDIS_URL=redis://Online-education-redis-1:6379
+      - MEDIASOUP_LISTEN_IP=0.0.0.0
+      - MEDIASOUP_ANNOUNCED_IP=127.0.0.1
+      - RTC_MIN_PORT=40100
+      - RTC_MAX_PORT=40199
+    depends_on:
+      - api
+      - redis
+    networks:
+      - online-education-net
+    restart: unless-stopped
+
+  # ═══════════════════════════════════════════════════════════════════
+  # 🗄️ PostgreSQL Database
+  # ═══════════════════════════════════════════════════════════════════
+  postgres:
+    image: postgres:15-alpine
+    container_name: Online-education-api-db-1
+    environment:
+      - POSTGRES_USER=glassclass
+      - POSTGRES_PASSWORD=glassclass123
+      - POSTGRES_DB=glassclass
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backend/api/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+    networks:
+      - online-education-net
+    restart: unless-stopped
+
+  # ═══════════════════════════════════════════════════════════════════
+  # 🚀 Redis Cache & PubSub
+  # ═══════════════════════════════════════════════════════════════════
+  redis:
+    image: redis:7-alpine
+    container_name: Online-education-redis-1
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - online-education-net
+    restart: unless-stopped
+
+  # ═══════════════════════════════════════════════════════════════════
+  # 🌐 Frontend App — Nginx serving built React app
+  # ═══════════════════════════════════════════════════════════════════
+  # app:
+  #   image: online-education-app:latest
+  #   container_name: Online-education-app-1
+  #   ports:
+  #     - "80:80"
+  #   networks:
+  #     - online-education-net
+  #   restart: unless-stopped
+
+networks:
+  online-education-net:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  redis_data:
+  api_data:
+  uploads:

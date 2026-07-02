@@ -1,0 +1,42 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(Invoke-RestMethod -Uri \"http://localhost:3002/health\")",
+      "PowerShell(cd \"D:\\\\temp1meeting\\\\online-education-super-app-scenario\"; if \\(-not \\(Test-Path \"node_modules\"\\)\\) { npm install 2>&1 | tail -5 })",
+      "Bash(curl -s -X POST http://localhost:3002/api/auth/login -H \"Content-Type: application/json\" -d \"{\\\\\"username\\\\\":\\\\\"saam\\\\\",\\\\\"password\\\\\":\\\\\"123456\\\\\"}\")",
+      "Bash(curl -s -X POST http://localhost:3002/api/auth/login -H \"Content-Type: application/json\" -d \"{\\\\\"role\\\\\":\\\\\"admin\\\\\",\\\\\"code\\\\\":\\\\\"saam\\\\\",\\\\\"password\\\\\":\\\\\"123456\\\\\"}\")",
+      "Bash(curl -s http://localhost:3002/health)",
+      "Bash(docker compose *)",
+      "Bash(curl -s -X POST http://localhost:3002/api/auth/login -H \"Content-Type: application/json\" -d '{\"role\":\"admin\",\"code\":\"saam\",\"password\":\"123456\"}')",
+      "Bash(npm run *)",
+      "Bash(curl -s http://localhost:5173)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(node -e \"const a = require\\('D:/temp1meeting/online-education-super-app-scenario/node_modules/jspdf-autotable/dist/jspdf.plugin.autotable.js'\\); console.log\\(typeof a\\)\")",
+      "Bash(node -e \"const pkg = require\\('D:/temp1meeting/online-education-super-app-scenario/node_modules/jspdf-autotable/package.json'\\); console.log\\(pkg.main, pkg.module, pkg.exports\\)\")",
+      "Bash(curl -s -I -X OPTIONS http://localhost:3002/api/auth/login -H \"Origin: http://localhost:5173\" -H \"Access-Control-Request-Method: POST\")",
+      "Bash(docker restart *)",
+      "Bash(docker exec *)",
+      "Bash(curl -s -X POST http://localhost:3002/api/classes -H \"Content-Type: application/json\" -H \"Authorization: Bearer test\" -d \"{\\\\\"name\\\\\":\\\\\"تست\\\\\",\\\\\"teacherName\\\\\":\\\\\"معلم\\\\\",\\\\\"teacherPassword\\\\\":\\\\\"123456\\\\\",\\\\\"courseName\\\\\":\\\\\"درس\\\\\",\\\\\"startDate\\\\\":\\\\\"۱۴۰۵/۰۴/۰۶\\\\\",\\\\\"startTime\\\\\":\\\\\"۰۰:۰۰\\\\\",\\\\\"endDate\\\\\":\\\\\"۱۴۰۵/۰۴/۰۶\\\\\",\\\\\"endTime\\\\\":\\\\\"۱۴:۰۰\\\\\",\\\\\"scheduleDays\\\\\":[],\\\\\"capacity\\\\\":5,\\\\\"totalHours\\\\\":14,\\\\\"isActive\\\\\":true}\")",
+      "Bash(curl -s -X POST http://localhost:3002/api/admin/login -H \"Content-Type: application/json\" -d \"{\\\\\"username\\\\\":\\\\\"saam\\\\\",\\\\\"password\\\\\":\\\\\"123456\\\\\"}\")",
+      "Bash(curl -s -X POST http://localhost:3002/api/admins/login -H \"Content-Type: application/json\" -d \"{\\\\\"username\\\\\":\\\\\"saam\\\\\",\\\\\"password\\\\\":\\\\\"123456\\\\\"}\")",
+      "Bash(curl -sv -X POST http://localhost:3002/api/auth/login -H \"Content-Type: application/json\" -d \"{\\\\\"username\\\\\":\\\\\"saam\\\\\",\\\\\"password\\\\\":\\\\\"123456\\\\\"}\")",
+      "Bash(npx tsc *)",
+      "Bash(node -e ' *)",
+      "Bash(node -e \"require\\('./server.js'\\)\")",
+      "Bash(cd \"D:\\\\temp1meeting\\\\online-education-super-app-scenario\\\\backend\\\\api\" && ls node_modules 2>/dev/null || ls ../node_modules 2>/dev/null | head -5 || echo \"no node_modules\")",
+      "PowerShell(docker compose -f \"D:\\\\temp1meeting\\\\online-education-super-app-scenario\\\\docker-compose.yml\" build api 2>&1)",
+      "PowerShell(tail -5)",
+      "Bash(xargs grep -l \"socket\\\\|emit\\\\|socket\")",
+      "Bash(docker rm *)",
+      "Bash(echo \"EXIT:$?\")",
+      "mcp__Claude_in_Chrome__navigate",
+      "mcp__Claude_in_Chrome__tabs_context_mcp",
+      "Bash(cat .env)",
+      "Bash(cat .env.local)",
+      "Bash(curl -s -X POST http://localhost:3002/api/auth/login -H \"Content-Type: application/json\" -d '{\"code\":\"CLS-INUCRZ\",\"password\":\"123456\",\"role\":\"teacher\"}' -w \"\\\\nHTTP:%{http_code}\")",
+      "PowerShell(docker exec Online-education-api-db-1 psql -U glassclass -d glassclass -c \"TRUNCATE class_live_sessions, student_live_sessions, session_history, student_attendance CASCADE; SELECT '??? ??' as status;\")",
+      "PowerShell(docker exec Online-education-api-db-1 psql -U glassclass -d glassclass -c \"ALTER TABLE students DROP COLUMN IF EXISTS is_online; SELECT 'done' as status;\")",
+      "Bash(grep -v \"//\\\\|console\")"
+    ]
+  }
+}
